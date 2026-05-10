@@ -36,3 +36,4 @@ go run main.go
 ([Dashboard Queue Worker](http://localhost:8080))
 
 ## Postman
+([See Postman](https://github.com/willy182/ticket-order-simulation/blob/main/ticketing/docs/Ticketing.postman_collection.json))
