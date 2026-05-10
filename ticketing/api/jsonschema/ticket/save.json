@@ -1,0 +1,28 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema",
+	"title": "JSON Schema for save",
+	"type": "object",
+	"properties": {
+		"id": {
+			"type": "integer"
+		},
+		"title": {
+			"type": "string",
+			"minLength": 3,
+			"maxLength": 255,
+			"errorMessage": "panjang minimal 3 karakter dan maksimal 255 karakter"
+		},
+		"quota": {
+			"type": "integer",
+			"minimum": 1,
+			"errorMessage": "minimal kuota tiket adalah 1"
+		},
+		"price": {
+			"type": "number",
+			"minimum": 0,
+			"errorMessage": "harga tiket tidak boleh negatif"
+		}
+	},
+	"required": [ "title", "quota", "price" ],
+	"additionalProperties": false
+}

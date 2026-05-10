@@ -1,0 +1,44 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema",
+	"title": "JSON Schema for save",
+	"type": "object",
+	"properties": {
+		"id": {
+			"type": "integer"
+		},
+		"customer_name": {
+			"type": "string",
+			"minLength": 3,
+			"maxLength": 255,
+			"errorMessage": "panjang minimal 3 karakter dan maksimal 255 karakter"
+		},
+		"customer_email": {
+			"type": "string",
+			"format": "email",
+			"errorMessage": "format email salah"
+		},
+		"customer_phone": {
+			"type": "string",
+			"minLength": 9,
+			"maxLength": 15,
+			"errorMessage": "panjang minimal 9 karakter dan maksimal 15 karakter"
+		},
+		"qty": {
+			"type": "integer",
+			"minimum": 1,
+			"errorMessage": "minimal booking tiket adalah 1"
+		},
+		"ticket_id": {
+			"type": "number",
+			"minimum": 0,
+			"errorMessage": "tiket ID tidak boleh negatif"
+		},
+		"status": {
+			"type": "string",
+			"enum": ["SUCCESS", "PENDING", "FAILED"],
+			"errorMessage": "status tidak valid"
+		}
+	},
+	"required": [ "customer_name", "customer_email", "customer_phone", "qty", "ticket_id", "status" ],
+	"additionalProperties": false
+}

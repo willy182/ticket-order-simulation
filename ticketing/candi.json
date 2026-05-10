@@ -1,0 +1,37 @@
+{
+     "GoVersion": "1.26",
+     "Version": "v1.20.0",
+     "ServiceName": "ticketing",
+     "PackagePrefix": "ticketing",
+     "ProtoSource": "ticketing/api/proto",
+     "Owner": "",
+     "License": "",
+     "Year": 2026,
+     "IsMonorepo": false,
+     "RestHandler": true,
+     "GRPCHandler": false,
+     "GraphQLHandler": false,
+     "FiberRestHandler": false,
+     "KafkaHandler": false,
+     "SchedulerHandler": false,
+     "RedisSubsHandler": false,
+     "TaskQueueHandler": true,
+     "PostgresListenerHandler": false,
+     "RabbitMQHandler": false,
+     "IsWorkerActive": true,
+     "RedisDeps": true,
+     "SQLDeps": true,
+     "MongoDeps": false,
+     "SQLUseGORM": true,
+     "ArangoDeps": false,
+     "SQLDriver": "postgres",
+     "WorkerPlugins": null,
+     "Modules": [
+          {
+               "ModuleName": "ticket"
+          },
+          {
+               "ModuleName": "transaction"
+          }
+     ]
+}

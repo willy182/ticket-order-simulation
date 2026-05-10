@@ -1,0 +1,6 @@
+bin
+vendor
+main_service.go
+ticketing
+coverage.txt
+.vscode

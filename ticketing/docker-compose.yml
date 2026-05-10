@@ -1,0 +1,23 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: ticket-postgres
+    ports:
+      - "5437:5432"
+    environment:
+      POSTGRES_USER: pengguna
+      POSTGRES_PASSWORD: katasandi
+      POSTGRES_DB: basisdata
+    volumes:
+       - pg-data:/var/lib/postgresql/data
+
+  redis:
+    image: 'redis:8.4.0-alpine'
+    container_name: ticket-redis
+    command: redis-server --requirepass katasandi_redis
+    ports:
+    - '6339:6379'
+    restart: on-failure
+
+volumes:
+  pg-data:
