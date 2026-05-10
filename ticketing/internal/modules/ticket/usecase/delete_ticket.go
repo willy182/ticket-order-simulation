@@ -7,6 +7,7 @@ import (
 	"ticketing/internal/modules/ticket/domain"
 
 	"github.com/golangid/candi/tracer"
+	"github.com/sirupsen/logrus"
 )
 
 func (uc *ticketUsecaseImpl) DeleteTicket(ctx context.Context, id int) (err error) {
@@ -16,6 +17,8 @@ func (uc *ticketUsecaseImpl) DeleteTicket(ctx context.Context, id int) (err erro
 	repoFilter := domain.FilterTicket{ID: &id}
 	err = uc.repoSQL.TicketRepo().Delete(ctx, &repoFilter)
 	if err != nil {
+		logrus.Error(err)
+		trace.SetError(err)
 		return
 	}
 

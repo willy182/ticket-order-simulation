@@ -9,6 +9,7 @@ import (
 	shareddomain "ticketing/pkg/shared/domain"
 
 	"github.com/golangid/candi/tracer"
+	"github.com/sirupsen/logrus"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -38,6 +39,8 @@ func (uc *ticketUsecaseImpl) GetAllTicket(ctx context.Context, filter *domain.Fi
 	results.Meta = helper.NewMeta(filter.Page, filter.Limit, int64(count), filter.ShowAll)
 
 	if err = eg.Wait(); err != nil {
+		logrus.Error(err)
+		trace.SetError(err)
 		return
 	}
 

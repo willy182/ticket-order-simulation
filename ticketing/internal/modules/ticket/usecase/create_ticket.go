@@ -9,6 +9,7 @@ import (
 	"ticketing/internal/modules/ticket/domain"
 
 	"github.com/golangid/candi/tracer"
+	"github.com/sirupsen/logrus"
 )
 
 func (uc *ticketUsecaseImpl) CreateTicket(ctx context.Context, req *domain.RequestTicket) (result domain.ResponseTicket, err error) {
@@ -18,6 +19,8 @@ func (uc *ticketUsecaseImpl) CreateTicket(ctx context.Context, req *domain.Reque
 	data := req.Deserialize()
 	err = uc.repoSQL.TicketRepo().Save(ctx, &data)
 	if err != nil {
+		logrus.Error(err)
+		trace.SetError(err)
 		return
 	}
 

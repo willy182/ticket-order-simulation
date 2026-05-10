@@ -7,6 +7,7 @@ import (
 
 	"github.com/golangid/candi/candishared"
 	"github.com/golangid/candi/tracer"
+	"github.com/sirupsen/logrus"
 )
 
 func (uc *transactionUsecaseImpl) GetAllTransaction(ctx context.Context, filter *domain.FilterTransaction) (result domain.ResponseTransactionList, err error) {
@@ -15,7 +16,9 @@ func (uc *transactionUsecaseImpl) GetAllTransaction(ctx context.Context, filter 
 
 	data, err := uc.repoSQL.TransactionRepo().FetchAll(ctx, filter)
 	if err != nil {
-		return result, err
+		logrus.Error(err)
+		trace.SetError(err)
+		return
 	}
 	count := uc.repoSQL.TransactionRepo().Count(ctx, filter)
 	result.Meta = candishared.NewMeta(filter.Page, filter.Limit, count)

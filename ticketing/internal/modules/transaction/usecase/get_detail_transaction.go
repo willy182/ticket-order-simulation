@@ -6,6 +6,7 @@ import (
 	"ticketing/internal/modules/transaction/domain"
 
 	"github.com/golangid/candi/tracer"
+	"github.com/sirupsen/logrus"
 )
 
 func (uc *transactionUsecaseImpl) GetDetailTransaction(ctx context.Context, id int64) (result domain.ResponseTransaction, err error) {
@@ -15,7 +16,9 @@ func (uc *transactionUsecaseImpl) GetDetailTransaction(ctx context.Context, id i
 	repoFilter := domain.FilterTransaction{ID: &id}
 	data, err := uc.repoSQL.TransactionRepo().Find(ctx, &repoFilter)
 	if err != nil {
-		return result, err
+		logrus.Error(err)
+		trace.SetError(err)
+		return
 	}
 
 	result.Serialize(&data)

@@ -6,6 +6,7 @@ import (
 	"ticketing/internal/modules/ticket/domain"
 
 	"github.com/golangid/candi/tracer"
+	"github.com/sirupsen/logrus"
 )
 
 func (uc *ticketUsecaseImpl) GetDetailTicket(ctx context.Context, id int) (result domain.ResponseTicket, err error) {
@@ -15,6 +16,8 @@ func (uc *ticketUsecaseImpl) GetDetailTicket(ctx context.Context, id int) (resul
 	repoFilter := domain.FilterTicket{ID: &id}
 	data, err := uc.repoSQL.TicketRepo().Find(ctx, &repoFilter)
 	if err != nil {
+		logrus.Error(err)
+		trace.SetError(err)
 		return
 	}
 

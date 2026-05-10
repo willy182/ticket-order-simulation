@@ -10,6 +10,7 @@ import (
 
 	"github.com/golangid/candi/candishared"
 	"github.com/golangid/candi/tracer"
+	"github.com/sirupsen/logrus"
 )
 
 func (uc *ticketUsecaseImpl) UpdateTicket(ctx context.Context, data *domain.RequestTicket) (err error) {
@@ -19,16 +20,18 @@ func (uc *ticketUsecaseImpl) UpdateTicket(ctx context.Context, data *domain.Requ
 	repoFilter := domain.FilterTicket{ID: &data.ID}
 	existing, err := uc.repoSQL.TicketRepo().Find(ctx, &repoFilter)
 	if err != nil {
+		logrus.Error(err)
+		trace.SetError(err)
 		return
 	}
 
 	existing.Title = data.Title
 	existing.Quota = data.Quota
 	existing.Price = data.Price
-	err = uc.repoSQL.WithTransaction(ctx, func(ctx context.Context) error {
-		return uc.repoSQL.TicketRepo().Save(ctx, &existing, candishared.DBUpdateSetUpdatedFields("Title", "Quota", "Price"))
-	})
+	err = uc.repoSQL.TicketRepo().Save(ctx, &existing, candishared.DBUpdateSetUpdatedFields("Title", "Quota", "Price"))
 	if err != nil {
+		logrus.Error(err)
+		trace.SetError(err)
 		return
 	}
 

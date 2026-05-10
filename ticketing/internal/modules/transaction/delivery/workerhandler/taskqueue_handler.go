@@ -18,6 +18,7 @@ import (
 	"github.com/golangid/candi/codebase/factory/types"
 	"github.com/golangid/candi/codebase/interfaces"
 	"github.com/golangid/candi/tracer"
+	"github.com/sirupsen/logrus"
 )
 
 // TaskQueueHandler struct
@@ -59,6 +60,7 @@ func (h *TaskQueueHandler) handleTaskReserveTicket(eventContext *candishared.Eve
 
 	var data domain.RequestTransaction
 	if err := json.Unmarshal(eventContext.Message(), &data); err != nil {
+		logrus.Error(err)
 		trace.SetError(err)
 		return err
 	}
@@ -66,6 +68,7 @@ func (h *TaskQueueHandler) handleTaskReserveTicket(eventContext *candishared.Eve
 	// exec usecase
 	err := h.uc.Transaction().ReserveTicket(ctx, data)
 	if err != nil {
+		logrus.Error(err)
 		trace.SetError(err)
 		return &candishared.ErrorRetrier{
 			Delay:   10 * time.Second,
@@ -88,6 +91,7 @@ func (h *TaskQueueHandler) handleTaskSendEmail(eventContext *candishared.EventCo
 
 	var data domain.ReqSendEmail
 	if err := json.Unmarshal(eventContext.Message(), &data); err != nil {
+		logrus.Error(err)
 		trace.SetError(err)
 		return err
 	}
@@ -95,6 +99,7 @@ func (h *TaskQueueHandler) handleTaskSendEmail(eventContext *candishared.EventCo
 	// exec usecase
 	err := h.uc.Transaction().SendEmail(ctx, data)
 	if err != nil {
+		logrus.Error(err)
 		trace.SetError(err)
 		return &candishared.ErrorRetrier{
 			Delay:   10 * time.Second,
@@ -117,6 +122,7 @@ func (h *TaskQueueHandler) handleTaskGenerateTicketCode(eventContext *candishare
 
 	id, err := strconv.ParseInt(string(eventContext.Message()), 10, 64)
 	if err != nil {
+		logrus.Error(err)
 		trace.SetError(err)
 		return err
 	}
@@ -124,6 +130,7 @@ func (h *TaskQueueHandler) handleTaskGenerateTicketCode(eventContext *candishare
 	// exec usecase
 	err = h.uc.Transaction().GenerateTicketCode(ctx, id)
 	if err != nil {
+		logrus.Error(err)
 		trace.SetError(err)
 		return &candishared.ErrorRetrier{
 			Delay:   10 * time.Second,

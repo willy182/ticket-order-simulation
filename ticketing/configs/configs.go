@@ -18,11 +18,11 @@ import (
 	"github.com/golangid/candi/codebase/interfaces"
 	"github.com/golangid/candi/config"
 	"github.com/golangid/candi/config/database"
-	
 	"github.com/golangid/candi/logger"
 	"github.com/golangid/candi/middleware"
 	"github.com/golangid/candi/tracer"
 	"github.com/golangid/candi/validator"
+	"github.com/sirupsen/logrus"
 )
 
 // LoadServiceConfigs load selected dependency configuration in this service
@@ -36,6 +36,7 @@ func LoadServiceConfigs(baseCfg *config.Config) (deps dependency.Dependency) {
 
 	baseCfg.LoadFunc(func(ctx context.Context) []interfaces.Closer {
 		otel, _ := tracer.InitOtel(baseCfg.ServiceName)
+		logrus.SetFormatter(&logrus.JSONFormatter{})
 		redisDeps := database.InitRedis()
 		sqlDeps := database.InitSQLDatabase()
 		// mongoDeps := database.InitMongoDB(ctx)
@@ -43,9 +44,9 @@ func LoadServiceConfigs(baseCfg *config.Config) (deps dependency.Dependency) {
 		locker := candiutils.NewRedisLocker(redisDeps.WritePool())
 
 		brokerDeps := broker.InitBrokers(
-			// broker.NewKafkaBroker(),
-			// broker.NewRabbitMQBroker(),
-			// broker.NewRedisBroker(redisDeps.WritePool()),
+		// broker.NewKafkaBroker(),
+		// broker.NewRabbitMQBroker(),
+		// broker.NewRedisBroker(redisDeps.WritePool()),
 		)
 
 		validatorDeps := validator.NewValidator()

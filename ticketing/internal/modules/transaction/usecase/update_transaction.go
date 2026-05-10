@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"ticketing/internal/modules/transaction/domain"
@@ -12,6 +11,7 @@ import (
 	"github.com/golangid/candi/candishared"
 	taskqueueworker "github.com/golangid/candi/codebase/app/task_queue_worker"
 	"github.com/golangid/candi/tracer"
+	"github.com/sirupsen/logrus"
 )
 
 func (uc *transactionUsecaseImpl) UpdateTransaction(ctx context.Context, data *domain.RequestTransaction) (err error) {
@@ -21,12 +21,12 @@ func (uc *transactionUsecaseImpl) UpdateTransaction(ctx context.Context, data *d
 	repoFilter := domain.FilterTransaction{ID: &data.ID}
 	existing, err := uc.repoSQL.TransactionRepo().Find(ctx, &repoFilter)
 	if err != nil {
-		return err
+		logrus.Error(err)
+		trace.SetError(err)
+		return
 	}
 	existing.Status = data.Status
-	err = uc.repoSQL.WithTransaction(ctx, func(ctx context.Context) error {
-		return uc.repoSQL.TransactionRepo().Save(ctx, &existing, candishared.DBUpdateSetUpdatedFields("Status"))
-	})
+	err = uc.repoSQL.TransactionRepo().Save(ctx, &existing, candishared.DBUpdateSetUpdatedFields("Status"))
 	return
 }
 
@@ -34,7 +34,7 @@ func (uc *transactionUsecaseImpl) SendEmail(ctx context.Context, req domain.ReqS
 	trace, ctx := tracer.StartTraceWithContext(ctx, "TransactionUsecase:SendEmail")
 	defer trace.Finish()
 
-	err = fmt.Errorf("Dear %s, your transaction in purchasing ticket %s is %s", req.CustomerName, req.TicketTitle, req.Status)
+	logrus.Infof("Dear %s, your transaction in purchasing ticket %s is %s", req.CustomerName, req.TicketTitle, req.Status)
 
 	return
 }
@@ -45,12 +45,16 @@ func (uc *transactionUsecaseImpl) GenerateTicketCode(ctx context.Context, id int
 
 	existing, err := uc.repoSQL.TransactionRepo().Find(ctx, &domain.FilterTransaction{ID: &id, Preloads: []string{"TicketData"}})
 	if err != nil {
+		logrus.Error(err)
+		trace.SetError(err)
 		return
 	}
 
 	existing.TicketCode = candihelper.ToStringPtr(helper.GenerateTicketCode(8))
 	err = uc.repoSQL.TransactionRepo().Save(ctx, &existing, candishared.DBUpdateSetUpdatedFields("TicketCode"))
 	if err != nil {
+		logrus.Error(err)
+		trace.SetError(err)
 		return
 	}
 

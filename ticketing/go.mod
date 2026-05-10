@@ -7,6 +7,7 @@ require (
 	github.com/gomodule/redigo v1.9.3
 	github.com/lib/pq v1.12.3
 	github.com/pressly/goose/v3 v3.27.1
+	github.com/sirupsen/logrus v1.9.4
 	golang.org/x/sync v0.20.0
 	gorm.io/driver/postgres v1.6.0
 	gorm.io/gorm v1.31.1

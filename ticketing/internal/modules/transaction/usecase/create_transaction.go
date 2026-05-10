@@ -15,6 +15,7 @@ import (
 	taskqueueworker "github.com/golangid/candi/codebase/app/task_queue_worker"
 	"github.com/golangid/candi/tracer"
 	"github.com/gomodule/redigo/redis"
+	"github.com/sirupsen/logrus"
 )
 
 func (uc *transactionUsecaseImpl) CreateTransaction(ctx context.Context, req *domain.RequestTransaction) (err error) {
@@ -30,6 +31,7 @@ func (uc *transactionUsecaseImpl) CreateTransaction(ctx context.Context, req *do
 		Args:          candihelper.ToBytes(&req),
 	})
 	if err != nil {
+		logrus.Error(err)
 		trace.SetError(err)
 		return
 	}
@@ -47,6 +49,7 @@ func (uc *transactionUsecaseImpl) ReserveTicket(ctx context.Context, req domain.
 	var dataByteTicket []byte
 	dataByteTicket, err = uc.cache.Get(ctx, keyDataTicket)
 	if err != nil {
+		logrus.Error(err)
 		trace.SetError(err)
 		return
 	}
@@ -54,6 +57,7 @@ func (uc *transactionUsecaseImpl) ReserveTicket(ctx context.Context, req domain.
 	var dataCacheTicket domainTicket.ResponseTicket
 	err = json.Unmarshal(dataByteTicket, &dataCacheTicket)
 	if err != nil {
+		logrus.Error(err)
 		trace.SetError(err)
 		return
 	}
@@ -63,6 +67,8 @@ func (uc *transactionUsecaseImpl) ReserveTicket(ctx context.Context, req domain.
 		data := req.Deserialize()
 		err = uc.repoSQL.TransactionRepo().Save(ctx, &data)
 		if err != nil {
+			logrus.Error(err)
+			trace.SetError(err)
 			return
 		}
 
@@ -108,6 +114,8 @@ func (uc *transactionUsecaseImpl) ReserveTicket(ctx context.Context, req domain.
 		var resExec int
 		resExec, err = redis.Int(uc.cache.DoCommand(ctx, true, "EVAL", reserveTicketLua, 1, keyQuotaTicket, req.Qty))
 		if err != nil {
+			logrus.Error(err)
+			trace.SetError(err)
 			return
 		}
 
@@ -126,6 +134,8 @@ func (uc *transactionUsecaseImpl) ReserveTicket(ctx context.Context, req domain.
 		data := req.Deserialize()
 		err = uc.repoSQL.TransactionRepo().Save(ctx, &data)
 		if err != nil {
+			logrus.Error(err)
+			trace.SetError(err)
 			return
 		}
 
