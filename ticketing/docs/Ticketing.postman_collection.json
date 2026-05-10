@@ -263,6 +263,104 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "List Transaction",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "pass",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/transaction?page=&limit=&order_by=&sort=&search=&ticket_id=&status=",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"transaction"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": ""
+								},
+								{
+									"key": "limit",
+									"value": ""
+								},
+								{
+									"key": "order_by",
+									"value": ""
+								},
+								{
+									"key": "sort",
+									"value": ""
+								},
+								{
+									"key": "search",
+									"value": ""
+								},
+								{
+									"key": "ticket_id",
+									"value": ""
+								},
+								{
+									"key": "status",
+									"value": "",
+									"description": "[SUCCESS, PENDING, FAILED]"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detail Transaction",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "pass",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/transaction/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"transaction",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}

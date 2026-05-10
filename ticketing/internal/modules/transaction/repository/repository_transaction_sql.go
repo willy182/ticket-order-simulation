@@ -107,6 +107,15 @@ func (r *transactionRepoSQL) setFilterTransaction(db *gorm.DB, filter *domain.Fi
 	if filter.ID != nil {
 		db = db.Where("id = ?", *filter.ID)
 	}
+	if filter.TicketID != nil {
+		db = db.Where("ticket_id = ?", *filter.TicketID)
+	}
+	if filter.Status != "" {
+		db = db.Where("status = ?", filter.Status)
+	}
+	if filter.Search != "" {
+		db = db.Where(`(UPPER(customer_name) LIKE '%%' || ? || '%%' OR UPPER(customer_email) LIKE '%%' || ? || '%%')`, strings.ToUpper(filter.Search), strings.ToUpper(filter.Search))
+	}
 
 	for _, preload := range filter.Preloads {
 		db = db.Preload(preload)

@@ -26,7 +26,7 @@ const (
 	baseURL    = "http://localhost:8001/v1/transaction"
 	username   = "user"
 	password   = "pass"
-	concurrent = 10
+	concurrent = 20
 )
 
 func main() {

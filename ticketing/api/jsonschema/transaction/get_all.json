@@ -15,11 +15,20 @@
 		},
 		"order_by": {
 			"type": "string",
-			"enum": ["id", "field", "created_at", "updated_at"]
+			"enum": ["id", "total_amount", "created_at", "updated_at"]
 		},
 		"sort": {
 			"type": "string",
 			"enum": ["asc", "desc", "ASC", "DESC"]
+		},
+		"ticket_id": {
+			"type": "integer",
+			"errorMessage": "ticket ID tidak valid"
+		},
+		"status": {
+			"type": "string",
+			"enum": ["SUCCESS", "PENDING", "FAILED"],
+			"errorMessage": "status tidak valid"
 		}
 	},
 	"additionalProperties": true

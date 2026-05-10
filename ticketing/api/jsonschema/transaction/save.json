@@ -29,7 +29,7 @@
 			"errorMessage": "minimal booking tiket adalah 1"
 		},
 		"ticket_id": {
-			"type": "number",
+			"type": "integer",
 			"minimum": 0,
 			"errorMessage": "tiket ID tidak boleh negatif"
 		},

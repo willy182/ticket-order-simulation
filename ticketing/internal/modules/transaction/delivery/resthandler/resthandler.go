@@ -42,8 +42,8 @@ func (h *RestHandler) Mount(root interfaces.RESTRouter) {
 	v1Transaction.GET("/", h.getAllTransaction)
 	v1Transaction.GET("/:id", h.getDetailTransactionByID)
 	v1Transaction.POST("/", h.createTransaction)
-	v1Transaction.PUT("/:id", h.updateTransaction)
-	v1Transaction.DELETE("/:id", h.deleteTransaction)
+	// v1Transaction.PUT("/:id", h.updateTransaction)
+	// v1Transaction.DELETE("/:id", h.deleteTransaction)
 }
 
 // GetAllTransaction documentation

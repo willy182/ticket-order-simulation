@@ -108,7 +108,7 @@ func (r *ticketRepoSQL) setFilterTicket(db *gorm.DB, filter *domain.FilterTicket
 		db = db.Where("id = ?", *filter.ID)
 	}
 	if filter.Search != "" {
-		db = db.Where("(title ILIKE '%%' || ? || '%%')", filter.Search)
+		db = db.Where(`LOWER(title) LIKE '%%' || ? || '%%'`, strings.ToLower(filter.Search))
 	}
 
 	for _, preload := range filter.Preloads {
